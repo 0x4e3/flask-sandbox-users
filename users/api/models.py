@@ -1,3 +1,5 @@
+import datetime
+
 from users import db
 
 
@@ -20,7 +22,8 @@ class User(db.Model):
         db.DateTime,
         nullable=False)
 
-    def __init__(self, username, email, created_at):
+    def __init__(self, username, email,
+                 created_at=datetime.datetime.utcnow()):
         self.username = username
         self.email = email
         self.created_at = created_at
