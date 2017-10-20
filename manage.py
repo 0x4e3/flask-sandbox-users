@@ -2,6 +2,7 @@ import unittest
 
 import coverage
 
+from flask_migrate import MigrateCommand
 from flask_script import Manager
 
 from users import create_app, db
@@ -25,10 +26,16 @@ manager = Manager(app)
 @manager.command
 def seed_db():
     """Seeds the database."""
-    db.session.add(
-        User(username='michael', email="michael@realpython.com"))
-    db.session.add(
-        User(username='michaelherman', email="michael@mherman.org"))
+    db.session.add(User(
+        username='michael',
+        email='michael@realpython.com',
+        password='test'
+    ))
+    db.session.add(User(
+        username='michaelherman',
+        email='michael@mherman.org',
+        password='test'
+    ))
     db.session.commit()
 
 
@@ -64,6 +71,9 @@ def cov():
         COV.erase()
         return 0
     return 1
+
+
+manager.add_command('db', MigrateCommand)
 
 
 if __name__ == "__main__":
