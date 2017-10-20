@@ -1,15 +1,23 @@
 from flask import Blueprint, jsonify, request, render_template
 from sqlalchemy import exc
 
-from users.api.models import User
 from users import db
+from users.api.models import User
+from users.api.utils import authenticate, is_admin
 
 
 users_blueprint = Blueprint('users', __name__)
 
 
 @users_blueprint.route('/users', methods=['POST'])
-def add_user():
+@authenticate
+def add_user(resp):
+    if not is_admin(resp):
+        response_object = {
+            'status': 'error',
+            'message': 'You do not have permission to do that.'
+        }
+        return jsonify(response_object), 401
     post_data = request.get_json()
     if not post_data:
         response_object = {

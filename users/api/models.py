@@ -30,6 +30,10 @@ class User(db.Model):
     created_at = db.Column(
         db.DateTime,
         nullable=False)
+    admin = db.Column(
+        db.Boolean,
+        default=False,
+        nullable=False)
 
     def __init__(self, username, email, password,
                  created_at=datetime.datetime.utcnow()):
